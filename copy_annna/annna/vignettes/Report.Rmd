@@ -1,0 +1,102 @@
+---
+title: "Report"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Report}
+  %\VignetteEngine{knitr::rmarkdown}
+  % \VignetteDepends{devtools}
+  \usepackage[utf8]{inputenc}
+---
+
+# Description
+This package queries the OpenFDA Drug Database for adverse events and drug recall information.
+It allows the user to plot information for a drug and an attribute such as patient sex, age, or date.
+Finally, it provides some analysis functions to look at drug data against recall data. It deviates 
+from the original proposal as it does not provide PCA analysis against all features. Due to limited
+time this goal was not achieved.
+   
+#Installation
+Install the package by downloading the annna directory and using
+```{r}
+devtools::load_all()
+library(annna)
+```
+   
+# Usage
+If a user is interested in looking at adverse events for a specific date they could:
+
+## Querying OpenFDA
+
+* `queryOpenFDA(limit)` will query the drug adverse events database and return the number of results as set by limit within a non-tidy dataframe. See `?queryOpenFDA` for more details. Optional paremters include querying for a specific date range, or recall events rather than adverse events.
+
+*  `queryAdverseEvents(limit)` Will return a tidy dataframe with drug and adverse information for the number of results desired. Columns include: id, sex, age, drug, drug indication, date and reaction.
+
+```{r}
+drugs_and_events <- queryAdverseEvents(limit = 100)
+drugs_and_events
+```
+
+* `queryRecalls(limit)` is similar to `queryAdverseEvents` but returns a table of results for drug
+recall information. Columns of the dataframe include: id of report, date of report, reason, product description, and classification
+
+```{r}
+queryRecalls(10)
+```
+
+## Plotting with ggplot
+
+* `plotDrugAdverseEvents` Takes the table returned by `queryAdverseEvents` a drug of interest for that table, and a variable of interest to plot for that drug. Examples include plotting age against a drug of interest to see how many adverse events are reported for different ages for a specific drug.
+
+```{r, eval=FALSE}
+drugs_and_events <- queryAdverseEvents(limit = 100)
+plotDrugAdverseEvents(drugs_and_events, drug_of_interest = "LETAIRIS", variable_of_interest = "age")
+```
+
+```{r, out.width = "400px"}
+knitr::include_graphics("sample_plot.jpg")
+```
+
+* `plotTopTenDrugs(drugs_and_events)` Will plot the top ten drugs that appear in the dataset with time 
+on the x axis and the number of adverse events for that drug on the y axis. If there is a tie, will plot more than 10.
+
+```{r, eval=FALSE}
+plotTopTenDrugs(drugs_and_events)
+```
+
+```{r, out.width = "400px"}
+knitr::include_graphics("top_ten_drugs.jpg")
+```  
+
+
+## Sample analysis of events over time
+
+* `getEventCounts(drugs_and_events)` takes the drug and events table returned by `queryAdverseEvents` and returns a tibble with adverse event dates and how many adverse events were reported on that date. This helps the user analyze whether there were spikes in the data for certain dates.
+
+```{r}
+drugs_and_events <- queryAdverseEvents(1000)
+event_counts <- getEventCounts(drugs_and_events)
+event_counts
+```
+
+* `plotEventCounts(event_counts)` Plots the information from the previous function call so that spikes 
+in data can easily be displayed over time.
+
+```{r, eval=FALSE}
+plotEventCounts(drugs_and_events)
+```
+```{r, out.width = "400px"}
+knitr::include_graphics("time_series.jpg")
+``` 
+
+#Contributions
+Anna Brezhneva was the sole author of this package as she decided to change from CR/NC much later in the quarter.
+
+# Next Steps
+Given more time I would have liked to provide more analysis functions that combine the outputs from the adverse events table and recall information table. This package provides the framework by which to query those two apis so that the user can easily build upon this package to include more extracted information from the .json files, following what was done for both adverse events and drug recalls. 
+
+Additionally, I would have liked to provide more visualizations for variables against the recall data.
+
+
+
+
+ 

@@ -1,0 +1,14 @@
+getEventCounts          Allow users to analyze Open FDA Drug Adverse
+                        Events
+plotDrugAdverseEvents   Allow users to visualize drug information
+                        against selected variable.
+plotEventCounts         Allow users to analyze Open FDA Drug Adverse
+                        Events data over time.
+plotTopTenDrugs         Allow users to analyze Open FDA Drug Adverse
+                        Events data over time.
+queryAdverseEvents      Allow users to query Open FDA Drug Adverse
+                        Events
+queryOpenFDA            Allow users to query Open FDA Drug Adverse
+                        Events
+queryRecalls            Allow users to query Open FDA Drug Recall
+                        Information

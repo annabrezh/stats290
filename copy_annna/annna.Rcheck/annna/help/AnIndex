@@ -1,0 +1,7 @@
+getEventCounts	getEventCounts
+plotDrugAdverseEvents	plotDrugAdverseEvents
+plotEventCounts	plotEventCounts
+plotTopTenDrugs	plotTopTenDrugs
+queryAdverseEvents	queryAdverseEvents
+queryOpenFDA	queryOpenFDA
+queryRecalls	queryRecalls

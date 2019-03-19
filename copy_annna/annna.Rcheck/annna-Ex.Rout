@@ -1,0 +1,1055 @@
+
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "annna"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "annna-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('annna')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("getEventCounts")
+> ### * getEventCounts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getEventCounts
+> ### Title: Allow users to analyze Open FDA Drug Adverse Events
+> ### Aliases: getEventCounts
+> 
+> ### ** Examples
+> 
+> drugs_and_events <- queryAdverseEvents(limit=10)
+Joining, by = c("id", "sex", "age")
+> getEventCounts(drugs_and_events)
+# A tibble: 5 x 2
+  date       unique_date_events
+  <date>                  <int>
+1 2004-03-19                  1
+2 2008-07-07                  1
+3 2014-02-28                  1
+4 2014-03-06                  1
+5 2014-03-12                  6
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getEventCounts", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotDrugAdverseEvents")
+> ### * plotDrugAdverseEvents
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotDrugAdverseEvents
+> ### Title: Allow users to visualize drug information against selected
+> ###   variable.
+> ### Aliases: plotDrugAdverseEvents
+> 
+> ### ** Examples
+> 
+> drugs_and_events <- queryAdverseEvents(limit = 101)
+Joining, by = c("id", "sex", "age")
+> plotDrugAdverseEvents(drugs_and_events, "LETAIRIS", "age")
+Selecting by count
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotDrugAdverseEvents", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:bindrcpp’
+
+> nameEx("plotEventCounts")
+> ### * plotEventCounts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotEventCounts
+> ### Title: Allow users to analyze Open FDA Drug Adverse Events data over
+> ###   time.
+> ### Aliases: plotEventCounts
+> 
+> ### ** Examples
+> 
+> drugs_and_events <- queryAdverseEvents(limit=10)
+Joining, by = c("id", "sex", "age")
+> plotEventCounts(drugs_and_events)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotEventCounts", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotTopTenDrugs")
+> ### * plotTopTenDrugs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotTopTenDrugs
+> ### Title: Allow users to analyze Open FDA Drug Adverse Events data over
+> ###   time.
+> ### Aliases: plotTopTenDrugs
+> 
+> ### ** Examples
+> 
+> drugs_and_events <- queryAdverseEvents(limit=10)
+Joining, by = c("id", "sex", "age")
+> plotTopTenDrugs(drugs_and_events)
+Selecting by n
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotTopTenDrugs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("queryAdverseEvents")
+> ### * queryAdverseEvents
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: queryAdverseEvents
+> ### Title: Allow users to query Open FDA Drug Adverse Events
+> ### Aliases: queryAdverseEvents
+> 
+> ### ** Examples
+> 
+> queryAdverseEvents(limit = 101)
+Joining, by = c("id", "sex", "age")
+# A tibble: 887 x 7
+   id       sex   age   drug             drug_indication date       reaction    
+   <chr>    <chr> <chr> <chr>            <chr>           <date>     <chr>       
+ 1 4322505… 1     56    OROKEN (CEFIXIM… PYELONEPHRITIS  2004-03-19 ARTHRALGIA  
+ 2 4322505… 1     56    OROKEN (CEFIXIM… PYELONEPHRITIS  2004-03-19 OEDEMA PERI…
+ 3 4322505… 1     56    OROKEN (CEFIXIM… PYELONEPHRITIS  2004-03-19 PURPURA     
+ 4 4322505… 1     56    PYOSTACINE (PRI… unknown         2004-03-19 ARTHRALGIA  
+ 5 4322505… 1     56    PYOSTACINE (PRI… unknown         2004-03-19 OEDEMA PERI…
+ 6 4322505… 1     56    PYOSTACINE (PRI… unknown         2004-03-19 PURPURA     
+ 7 4322505… 1     56    ROCEPHIN         unknown         2004-03-19 ARTHRALGIA  
+ 8 4322505… 1     56    ROCEPHIN         unknown         2004-03-19 OEDEMA PERI…
+ 9 4322505… 1     56    ROCEPHIN         unknown         2004-03-19 PURPURA     
+10 4322505… 1     56    OFLOXACIN        unknown         2004-03-19 ARTHRALGIA  
+# … with 877 more rows
+> queryAdverseEvents(limit=10, date_start="20050101", date_end="20060101")
+Joining, by = c("id", "sex", "age")
+# A tibble: 675 x 7
+   id       sex   age   drug       drug_indication    date       reaction       
+   <chr>    <chr> <chr> <chr>      <chr>              <date>     <chr>          
+ 1 4598678… 2     29    IMODIUM    unknown            2005-03-04 INTESTINAL PER…
+ 2 4598678… 2     29    IMODIUM    unknown            2005-03-04 PERITONITIS    
+ 3 4598678… 2     29    ANTIBIOTI… unknown            2005-03-04 INTESTINAL PER…
+ 4 4598678… 2     29    ANTIBIOTI… unknown            2005-03-04 PERITONITIS    
+ 5 4635714… 2     42    ZOLADEX    BREAST CANCER      2005-04-14 CATARACT       
+ 6 4635714… 2     42    ZOLADEX    BREAST CANCER      2005-04-14 VISUAL ACUITY …
+ 7 4607644… 1     73    CORGARD    ANGINA PECTORIS    2005-03-14 ANGIONEUROTIC …
+ 8 4607644… 1     73    OMEPRAZOLE unknown            2005-03-14 ANGIONEUROTIC …
+ 9 4607644… 1     73    ZESTRIL    MYOCARDIAL INFARC… 2005-03-14 ANGIONEUROTIC …
+10 4607644… 1     73    ASPEGIC 3… unknown            2005-03-14 ANGIONEUROTIC …
+# … with 665 more rows
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("queryAdverseEvents", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("queryOpenFDA")
+> ### * queryOpenFDA
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: queryOpenFDA
+> ### Title: Allow users to query Open FDA Drug Adverse Events
+> ### Aliases: queryOpenFDA
+> 
+> ### ** Examples
+> 
+> queryOpenFDA(limit = 1, skip = 0, event_or_enforcement = "enforcement")
+$meta
+$meta$disclaimer
+[1] "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service."
+
+$meta$terms
+[1] "https://open.fda.gov/terms/"
+
+$meta$license
+[1] "https://open.fda.gov/license/"
+
+$meta$last_updated
+[1] "2019-03-16"
+
+$meta$results
+$meta$results$skip
+[1] 0
+
+$meta$results$limit
+[1] 1
+
+$meta$results$total
+[1] 9343
+
+
+
+$results
+$results[[1]]
+$results[[1]]$country
+[1] "United States"
+
+$results[[1]]$city
+[1] "Daytona Beach"
+
+$results[[1]]$reason_for_recall
+[1] "CGMP Deviations: products manufactured under conditions that could impact its product quality."
+
+$results[[1]]$address_1
+[1] "330 Carswell Ave"
+
+$results[[1]]$address_2
+[1] ""
+
+$results[[1]]$code_info
+[1] "All lots remaining within expiry."
+
+$results[[1]]$product_quantity
+[1] "21,492 bottles"
+
+$results[[1]]$center_classification_date
+[1] "20181016"
+
+$results[[1]]$distribution_pattern
+[1] "Nationwide in the USA"
+
+$results[[1]]$state
+[1] "FL"
+
+$results[[1]]$product_description
+[1] "Discount Drug Mart, Food Fair, Saline Nasal Spray (sodium chloride) 0.65%, packaged as a) 3 FL OZ (89 mL) bottle UPC 0 93351 01833 6; b) 1.5 FL OZ (45 mL) bottle UPC 0 93351 01834 3, Distributed by: Discount Drug Mart, 211 Commerce Drive, Medina, OH 44256"
+
+$results[[1]]$report_date
+[1] "20181024"
+
+$results[[1]]$classification
+[1] "Class II"
+
+$results[[1]]$openfda
+named list()
+
+$results[[1]]$recall_number
+[1] "D-0036-2019"
+
+$results[[1]]$recalling_firm
+[1] "Product Quest Manufacturing LLC"
+
+$results[[1]]$initial_firm_notification
+[1] "Letter"
+
+$results[[1]]$event_id
+[1] "80750"
+
+$results[[1]]$product_type
+[1] "Drugs"
+
+$results[[1]]$recall_initiation_date
+[1] "20180803"
+
+$results[[1]]$postal_code
+[1] "32117-4416"
+
+$results[[1]]$voluntary_mandated
+[1] "Voluntary: Firm Initiated"
+
+$results[[1]]$status
+[1] "Ongoing"
+
+
+
+> queryOpenFDA(date_start = "20040101", date_end = "20131231")
+$meta
+$meta$disclaimer
+[1] "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service."
+
+$meta$terms
+[1] "https://open.fda.gov/terms/"
+
+$meta$license
+[1] "https://open.fda.gov/license/"
+
+$meta$last_updated
+[1] "2019-03-16"
+
+$meta$results
+$meta$results$skip
+[1] 0
+
+$meta$results$limit
+[1] 1
+
+$meta$results$total
+[1] 3904421
+
+
+
+$results
+$results[[1]]
+$results[[1]]$receiptdateformat
+[1] "102"
+
+$results[[1]]$receiver
+NULL
+
+$results[[1]]$companynumb
+[1] "HQWYE821915MAR04"
+
+$results[[1]]$receivedateformat
+[1] "102"
+
+$results[[1]]$primarysource
+NULL
+
+$results[[1]]$seriousnessother
+[1] "1"
+
+$results[[1]]$transmissiondateformat
+[1] "102"
+
+$results[[1]]$fulfillexpeditecriteria
+[1] "1"
+
+$results[[1]]$safetyreportid
+[1] "4322505-4"
+
+$results[[1]]$sender
+$results[[1]]$sender$senderorganization
+[1] "FDA-Public Use"
+
+
+$results[[1]]$receivedate
+[1] "20040319"
+
+$results[[1]]$patient
+$results[[1]]$patient$patientonsetage
+[1] "56"
+
+$results[[1]]$patient$reaction
+$results[[1]]$patient$reaction[[1]]
+$results[[1]]$patient$reaction[[1]]$reactionmeddrapt
+[1] "ARTHRALGIA"
+
+
+$results[[1]]$patient$reaction[[2]]
+$results[[1]]$patient$reaction[[2]]$reactionmeddrapt
+[1] "OEDEMA PERIPHERAL"
+
+
+$results[[1]]$patient$reaction[[3]]
+$results[[1]]$patient$reaction[[3]]$reactionmeddrapt
+[1] "PURPURA"
+
+
+
+$results[[1]]$patient$patientonsetageunit
+[1] "801"
+
+$results[[1]]$patient$patientsex
+[1] "1"
+
+$results[[1]]$patient$drug
+$results[[1]]$patient$drug[[1]]
+$results[[1]]$patient$drug[[1]]$drugstartdateformat
+[1] "102"
+
+$results[[1]]$patient$drug[[1]]$drugindication
+[1] "PYELONEPHRITIS"
+
+$results[[1]]$patient$drug[[1]]$drugadministrationroute
+[1] "048"
+
+$results[[1]]$patient$drug[[1]]$drugtreatmentduration
+[1] "4"
+
+$results[[1]]$patient$drug[[1]]$drugcharacterization
+[1] "1"
+
+$results[[1]]$patient$drug[[1]]$drugstartdate
+[1] "20031227"
+
+$results[[1]]$patient$drug[[1]]$drugenddateformat
+[1] "102"
+
+$results[[1]]$patient$drug[[1]]$drugtreatmentdurationunit
+[1] "804"
+
+$results[[1]]$patient$drug[[1]]$drugdosagetext
+[1] "ORAL"
+
+$results[[1]]$patient$drug[[1]]$drugauthorizationnumb
+[1] "50621"
+
+$results[[1]]$patient$drug[[1]]$drugenddate
+[1] "20031230"
+
+$results[[1]]$patient$drug[[1]]$medicinalproduct
+[1] "OROKEN (CEFIXIME, UNSPEC)"
+
+
+$results[[1]]$patient$drug[[2]]
+$results[[1]]$patient$drug[[2]]$drugcharacterization
+[1] "2"
+
+$results[[1]]$patient$drug[[2]]$medicinalproduct
+[1] "PYOSTACINE (PRISTINAMYCIN)"
+
+
+$results[[1]]$patient$drug[[3]]
+$results[[1]]$patient$drug[[3]]$drugcharacterization
+[1] "2"
+
+$results[[1]]$patient$drug[[3]]$medicinalproduct
+[1] "ROCEPHIN"
+
+
+$results[[1]]$patient$drug[[4]]
+$results[[1]]$patient$drug[[4]]$drugcharacterization
+[1] "2"
+
+$results[[1]]$patient$drug[[4]]$openfda
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[1]]
+[1] "0404-7189"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[2]]
+[1] "60505-0560"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[3]]
+[1] "64980-515"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[4]]
+[1] "75834-120"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[5]]
+[1] "11980-779"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[6]]
+[1] "50383-025"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[7]]
+[1] "50383-024"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[8]]
+[1] "13985-602"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[9]]
+[1] "55545-1003"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[10]]
+[1] "75834-112"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[11]]
+[1] "60505-0363"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[12]]
+[1] "68047-713"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[13]]
+[1] "0517-0760"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[14]]
+[1] "0517-0761"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[15]]
+[1] "40042-049"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[16]]
+[1] "59390-140"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[17]]
+[1] "75834-119"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[18]]
+[1] "75834-201"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[19]]
+[1] "75834-200"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[20]]
+[1] "24208-410"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[21]]
+[1] "71209-098"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[22]]
+[1] "71209-099"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[23]]
+[1] "24208-434"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[24]]
+[1] "75834-199"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[25]]
+[1] "17478-713"
+
+$results[[1]]$patient$drug[[4]]$openfda$product_ndc[[26]]
+[1] "71209-097"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[1]]
+[1] "13985-602-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[2]]
+[1] "17478-713-11"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[3]]
+[1] "17478-713-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[4]]
+[1] "50383-025-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[5]]
+[1] "71209-097-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[6]]
+[1] "71209-098-02"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[7]]
+[1] "71209-099-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[8]]
+[1] "75834-119-50"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[9]]
+[1] "71209-097-02"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[10]]
+[1] "0517-0760-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[11]]
+[1] "50383-024-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[12]]
+[1] "75834-120-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[13]]
+[1] "55545-1003-2"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[14]]
+[1] "75834-120-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[15]]
+[1] "75834-200-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[16]]
+[1] "75834-112-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[17]]
+[1] "75834-199-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[18]]
+[1] "75834-200-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[19]]
+[1] "75834-201-50"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[20]]
+[1] "75834-112-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[21]]
+[1] "68047-713-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[22]]
+[1] "0404-7189-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[23]]
+[1] "75834-200-50"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[24]]
+[1] "24208-434-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[25]]
+[1] "40042-049-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[26]]
+[1] "75834-201-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[27]]
+[1] "13985-602-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[28]]
+[1] "50383-025-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[29]]
+[1] "75834-119-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[30]]
+[1] "55545-1003-1"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[31]]
+[1] "24208-410-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[32]]
+[1] "75834-119-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[33]]
+[1] "50383-024-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[34]]
+[1] "71209-099-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[35]]
+[1] "71209-098-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[36]]
+[1] "71209-099-02"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[37]]
+[1] "11980-779-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[38]]
+[1] "60505-0363-2"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[39]]
+[1] "64980-515-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[40]]
+[1] "71209-097-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[41]]
+[1] "60505-0363-1"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[42]]
+[1] "64980-515-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[43]]
+[1] "0517-0761-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[44]]
+[1] "75834-201-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[45]]
+[1] "24208-434-10"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[46]]
+[1] "24208-410-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[47]]
+[1] "60505-0560-1"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[48]]
+[1] "60505-0560-0"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[49]]
+[1] "75834-120-50"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[50]]
+[1] "75834-199-01"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[51]]
+[1] "75834-112-50"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[52]]
+[1] "75834-199-50"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[53]]
+[1] "40042-049-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[54]]
+[1] "59390-140-05"
+
+$results[[1]]$patient$drug[[4]]$openfda$package_ndc[[55]]
+[1] "71209-098-05"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$generic_name
+$results[[1]]$patient$drug[[4]]$openfda$generic_name[[1]]
+[1] "OFLOXACIN"
+
+$results[[1]]$patient$drug[[4]]$openfda$generic_name[[2]]
+[1] "OFLOXAXIN"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[1]]
+[1] "ef145ece-56d8-4dea-a136-ec462b335641"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[2]]
+[1] "8db221b1-32f3-f6ca-e404-71f56a860d08"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[3]]
+[1] "6a3dcc79-bde4-4c32-8a0e-ea14a1e1a191"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[4]]
+[1] "7aab4449-3dda-4e2c-8e40-b3244a548bf5"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[5]]
+[1] "81e8ece1-ab0b-4deb-8f84-79f21419b328"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[6]]
+[1] "2ec6bd57-96df-47ac-b218-1469801868b7"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[7]]
+[1] "1779c568-d7bb-4bd5-bc29-13bd52ba8a0a"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[8]]
+[1] "ee1bf431-97fa-4aba-9cc3-0cfcea779ca2"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[9]]
+[1] "7882f70e-d228-4c52-9390-0d927c51af1f"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[10]]
+[1] "b4d09b4d-bc6a-405b-91c8-e4246336a1f7"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[11]]
+[1] "fe564e33-8f5d-4b57-87a9-7afae02eaf97"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[12]]
+[1] "c76d8dc7-9a66-471b-814b-ef7f3605ec93"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[13]]
+[1] "ad40954d-0b1d-47c5-8bd5-8a1efd9a7153"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[14]]
+[1] "8b73d354-4631-40e8-b187-e8b0580bd6ea"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[15]]
+[1] "5117d567-2004-c5ed-1391-f8831864696f"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[16]]
+[1] "fcd7c5d7-42f4-4dcb-bc84-d976fafd5df4"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[17]]
+[1] "227e11ab-4e07-4e34-b21d-ef965bae6272"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[18]]
+[1] "c677b35c-0432-4ee5-af57-1f95449c48b6"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_set_id[[19]]
+[1] "c5484f1a-2321-453f-9469-dfcf709e2e2e"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$brand_name
+$results[[1]]$patient$drug[[4]]$openfda$brand_name[[1]]
+[1] "OFLOXACIN OTIC"
+
+$results[[1]]$patient$drug[[4]]$openfda$brand_name[[2]]
+[1] "OFLOXACIN OPHTHALMIC"
+
+$results[[1]]$patient$drug[[4]]$openfda$brand_name[[3]]
+[1] "OFLOXACIN"
+
+$results[[1]]$patient$drug[[4]]$openfda$brand_name[[4]]
+[1] "OCUFLOX"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[1]]
+[1] "Akorn, Inc."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[2]]
+[1] "Altaire Pharmaceuticals Inc."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[3]]
+[1] "PharmaForce, Inc."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[4]]
+[1] "American Regent, Inc."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[5]]
+[1] "Hi-Tech Pharmacal Co., Inc."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[6]]
+[1] "Larken Laboratories, Inc."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[7]]
+[1] "Allergan, Inc."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[8]]
+[1] "Rising Pharmaceuticals, Inc."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[9]]
+[1] "Bausch & Lomb Incorporated"
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[10]]
+[1] "Apotex Corp."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[11]]
+[1] "Cadila Pharmaceuticals Limited"
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[12]]
+[1] "Henry Schein Inc."
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[13]]
+[1] "FDC Limited"
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[14]]
+[1] "MWI"
+
+$results[[1]]$patient$drug[[4]]$openfda$manufacturer_name[[15]]
+[1] "Nivagen Pharmaceuticals, Inc."
+
+
+$results[[1]]$patient$drug[[4]]$openfda$unii
+$results[[1]]$patient$drug[[4]]$openfda$unii[[1]]
+[1] "A4P49JAZ9H"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$rxcui
+$results[[1]]$patient$drug[[4]]$openfda$rxcui[[1]]
+[1] "207202"
+
+$results[[1]]$patient$drug[[4]]$openfda$rxcui[[2]]
+[1] "312075"
+
+$results[[1]]$patient$drug[[4]]$openfda$rxcui[[3]]
+[1] "198048"
+
+$results[[1]]$patient$drug[[4]]$openfda$rxcui[[4]]
+[1] "198049"
+
+$results[[1]]$patient$drug[[4]]$openfda$rxcui[[5]]
+[1] "198050"
+
+$results[[1]]$patient$drug[[4]]$openfda$rxcui[[6]]
+[1] "242446"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[1]]
+[1] "509dde59-6f4d-410b-9835-81eb6a3e7623"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[2]]
+[1] "2d731281-5564-43ff-9889-07931fb2c555"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[3]]
+[1] "3e4a3dc8-8e55-cc6e-6fb1-3796147f4607"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[4]]
+[1] "d2b7e684-27f1-4ee7-b235-58b632ac9694"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[5]]
+[1] "84d7029b-f19a-4360-9fec-7a5e9282b7d7"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[6]]
+[1] "763f6e7e-45d0-850d-e053-2a91aa0a4485"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[7]]
+[1] "4662b8b1-2cfe-4472-bd5b-374737254a4f"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[8]]
+[1] "e4abdf47-d651-478c-be0b-88b2f256023c"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[9]]
+[1] "6467bdfc-698a-416e-97ed-f05c31b69063"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[10]]
+[1] "243c0b7c-8011-4a94-8b25-0329de936439"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[11]]
+[1] "0095d1d6-d83e-4e22-aa61-3b4753f0753b"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[12]]
+[1] "bd2baa03-a145-4320-b7ca-d63f6343e9d6"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[13]]
+[1] "0eacc7c9-657e-4593-86f1-901e7be1f0a4"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[14]]
+[1] "3fc21b59-1737-4e42-8e35-98eb9256a4d3"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[15]]
+[1] "0d187321-481b-4030-96b6-2df0bf5b0487"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[16]]
+[1] "df580e2b-f6c3-4ae2-92ba-c8a0dd3fe993"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[17]]
+[1] "c41b0332-f580-4927-8621-9af1452f8ac6"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[18]]
+[1] "ffd3b686-8151-4ef7-ad8c-62391295ee6e"
+
+$results[[1]]$patient$drug[[4]]$openfda$spl_id[[19]]
+[1] "48a41c0b-59f7-ef15-7639-30323f6d631b"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$substance_name
+$results[[1]]$patient$drug[[4]]$openfda$substance_name[[1]]
+[1] "OFLOXACIN"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$product_type
+$results[[1]]$patient$drug[[4]]$openfda$product_type[[1]]
+[1] "HUMAN PRESCRIPTION DRUG"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$route
+$results[[1]]$patient$drug[[4]]$openfda$route[[1]]
+[1] "AURICULAR (OTIC)"
+
+$results[[1]]$patient$drug[[4]]$openfda$route[[2]]
+[1] "ORAL"
+
+$results[[1]]$patient$drug[[4]]$openfda$route[[3]]
+[1] "OPHTHALMIC"
+
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[1]]
+[1] "ANDA076407"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[2]]
+[1] "ANDA076830"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[3]]
+[1] "ANDA091656"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[4]]
+[1] "ANDA076128"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[5]]
+[1] "NDA019921"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[6]]
+[1] "ANDA076527"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[7]]
+[1] "ANDA090395"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[8]]
+[1] "ANDA076622"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[9]]
+[1] "ANDA076513"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[10]]
+[1] "ANDA076616"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[11]]
+[1] "ANDA202692"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[12]]
+[1] "ANDA078559"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[13]]
+[1] "ANDA076615"
+
+$results[[1]]$patient$drug[[4]]$openfda$application_number[[14]]
+[1] "ANDA076093"
+
+
+
+$results[[1]]$patient$drug[[4]]$medicinalproduct
+[1] "OFLOXACIN"
+
+
+
+
+$results[[1]]$seriousnesshospitalization
+[1] "1"
+
+$results[[1]]$transmissiondate
+[1] "20041129"
+
+$results[[1]]$serious
+[1] "1"
+
+$results[[1]]$receiptdate
+[1] "20040315"
+
+
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("queryOpenFDA", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("queryRecalls")
+> ### * queryRecalls
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: queryRecalls
+> ### Title: Allow users to query Open FDA Drug Recall Information
+> ### Aliases: queryRecalls
+> 
+> ### ** Examples
+> 
+> queryRecalls(limit = 10)
+# A tibble: 10 x 5
+   id      date       reason              product_desc            classification
+   <chr>   <date>     <chr>               <chr>                   <chr>         
+ 1 D-0036… 2018-08-03 CGMP Deviations: p… Discount Drug Mart, Fo… Class II      
+ 2 D-672-… 2014-11-14 Penicillin Cross C… Famotidine active phar… Class II      
+ 3 D-641-… 2014-11-14 Penicillin Cross C… Doxycycline HCI active… Class II      
+ 4 D-0107… 2018-10-09 CGMP Deviations: p… Brain Power,Homeopathi… Class II      
+ 5 D-1616… 2014-04-24 Failed Tablet/Caps… Diclofenac Sodium and … Class II      
+ 6 D-0667… 2015-12-23 Marketed Without A… APEXXX tablets, 300 mg… Class I       
+ 7 D-1224… 2013-04-30 Marketed without a… Black Ant, 4600 mg x 4… Class I       
+ 8 D-0162… 2015-10-21 Failed Stability S… RANITIDINE SYRUP (RANI… Class III     
+ 9 D-054-… 2013-05-28 The firm received … Betamethasone NA Phosp… Class II      
+10 D-810-… 2013-07-02 Labeling: Label Mi… LEVOTHYROXINE SODIUM, … Class II      
+> queryRecalls(limit=10, date_start="20050101", date_end="20060101")
+[1] "No matches found. Please check url"
+[1] "https://api.fda.gov/drug/enforcement.json?limit=10&skip=0&search=reportdate:[20050101+TO+20060101]"
+[1] "no matches found for parameters specified"
+NULL
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("queryRecalls", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.656 0.158 4.644 0.002 0.004 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

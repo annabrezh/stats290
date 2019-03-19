@@ -1,0 +1,20 @@
+Package: annna
+Type: Package
+Title: Open FDA Developer Challenge R Helper Package
+Version: 1.0
+Date: 2019-03-10
+Authors@R: person("Anna", "Brezhneva", email = "annna@stanford.edu",
+  role = c("aut", "cre"))
+Depends: R (>= 3.5)
+Imports: httr, tibble, dplyr, ggplot2, scales, jsonlite, tidyr, date,
+        devtools
+Description: Fill out later.
+License: GPL-2
+RoxygenNote: 6.1.1
+Encoding: UTF-8
+Suggests: knitr, rmarkdown, testthat
+VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2019-03-19 00:14:15 UTC; abrezhneva
+Author: Anna Brezhneva [aut, cre]
+Maintainer: Anna Brezhneva <annna@stanford.edu>

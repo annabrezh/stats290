@@ -1,0 +1,387 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library(httr)
+library(jsonlite)
+library(tidyr)
+library(tibble)
+library(dplyr)
+```
+
+1.  Querying.  The package will enable users to query the Adverse
+Events Database and other databases on OpenFDA from R. For example,
+they could query information about events and patients.
+
+
+```{r}
+queryOpenFDA <- function(limit=1, skip=0) {
+    url <- paste0("https://api.fda.gov/drug/event.json?limit=", limit)
+    url <- paste0(url, "&skip=", skip)
+    resp <- GET(url)
+    df <- jsonlite::fromJSON(content(resp, "text"), simplifyVector = FALSE)
+    df
+}
+```
+
+
+```{r}
+getAges <- function(patient_info) {
+    patient_ages <- lapply(patient_info, function(x) {x$patientonsetage})
+    patient_ages <- lapply(patient_ages, function(x) {
+        if(is.null(x)) {
+            "unknown"
+        } 
+        else {
+            x
+        }
+    })
+    patient_ages
+}
+```
+
+
+```{r}
+getSex <- function(patient_info) {
+    patient_sex <- lapply(patient_info, function(x) {x$patientsex})
+    patient_sex <- lapply(patient_sex, function(x) {
+        if(is.null(x)) {
+            "unknown"
+        } 
+        else {
+            x
+        }
+    })
+    patient_sex
+}
+```
+
+```{r}
+
+```
+
+```{r}
+getReactions <- function(patient_info) {
+    patient_reactions <- lapply(patient_info, function(x) {x$reaction})
+    patient_reactions <- lapply(patient_reactions, function(x){
+        lapply(x, function(y) {
+            y$reactionmeddrapt 
+        })
+    })
+    patient_reactions
+}
+```
+
+```{r}
+getDrugs <- function(patient_info) {
+    patient_drugs <- lapply(patient_info, function(x) {x$drug})
+
+    patient_drugs <- lapply(patient_drugs, function(x) {
+        lapply(x, function(y) {
+            y$medicinalproduct })})
+    patient_drugs
+}
+```
+
+```{r}
+getDrugIndication <- function(patient_info) {
+    patient_drugs <- lapply(patient_info, function(x) {x$drug})
+
+    patient_drug_indication <- lapply(patient_drugs, function(x) {
+        lapply(x, function(y) {
+            y$drugindication })})
+    
+    patient_drug_indication <- lapply(patient_drug_indication, function(x) {
+        lapply(x, function(y) {
+            if(is.null(y)) {
+                "unknown"
+            } 
+            else {
+                y
+            }
+        })
+    })
+    
+    patient_drug_indication
+}
+```
+
+
+```{r}
+getDrugsAndEvents <- function(df) {
+    results <- df$results
+    ids <- lapply(results, function(x){x$safetyreportid})
+    date <- lapply(results, function(x) {x$receivedate})
+    patient_info <- lapply(results, function(x) {x$patient})
+    patient_ages <- getAges(patient_info)
+    patient_sexes <- getSex(patient_info)
+    patient_reactions <- getReactions(patient_info)
+    patient_drugs <- getDrugs(patient_info)
+    patient_drug_indications <- getDrugIndication(patient_info)
+    
+    
+    adverse_events <- tibble(id = unlist(ids), sex = unlist(patient_sexes), age = unlist(patient_ages), reaction = patient_reactions, date = unlist(date))
+    adverse_events <- adverse_events %>% unnest() %>% unnest()
+    adverse_events[["date"]] <- as.Date(adverse_events[["date"]], "%Y%m%d")
+    #adverse_events
+    
+    
+    drugs <- tibble(id = unlist(ids), sex = unlist(patient_sexes), age = unlist(patient_ages), drug = patient_drugs, drug_indication = patient_drug_indications)
+    drugs <- drugs %>% unnest() %>% unnest()
+    
+    return(list("adverse_events" = adverse_events, "drugs" = drugs))
+}
+```
+
+
+```{r}
+# write a function that will loop through the requested number of results
+queryOpenFDAWrapper <- function(limit) {
+    
+    limit_allowed_by_fda = 100
+    drugs <- tibble()
+    adverse_events <- tibble()
+    
+    # say limit is 101
+    skip = 0
+    while (limit > 100) {
+        df <- queryOpenFDA(limit_allowed_by_fda, skip) 
+        drugs_and_events <- getDrugsAndEvents(df)
+        drugs <- rbind(drugs, drugs_and_events$drugs)
+        adverse_events <- rbind(adverse_events, drugs_and_events$adverse_events)
+        
+        limit <- limit - 100
+        skip <- skip + 100
+        
+    }
+    
+    df <- queryOpenFDA(limit_allowed_by_fda, skip) 
+    drugs_and_events <- getDrugsAndEvents(df)
+    drugs <- rbind(drugs, drugs_and_events$drugs)
+    adverse_events <- rbind(adverse_events, drugs_and_events$adverse_events)
+    
+    return(list("drugs" = drugs, "adverse_events" = adverse_events))
+
+}
+```
+
+```{r}
+drugs_and_events <- queryOpenFDAWrapper(10)
+drugs <- drugs_and_events$drugs
+events <- drugs_and_events$adverse_events
+drugs
+events
+```
+
+```{r}
+drugs_and_events <- inner_join(drugs, events)
+```
+
+2. Visualization.  The package will also provide tools to
+visualize for an inquired drug the relationship between adverse event
+counts/types and time, drug pair, patient's weight, age, gender and
+other variables.
+
+```{r}
+library(ggplot2)
+library(scales)
+```
+
+```{r}
+# interesting table of drug and reaction
+counts_drugs_and_reactions <- drugs_and_events %>%
+    group_by(drug, reaction) %>%
+    summarize(reaction_count = n()) %>%
+    arrange(desc(reaction_count)) 
+counts_drugs_and_reactions
+```
+
+```{r}
+# interesting staps of top reaction per drug
+top_reaction_per_drug <- counts_drugs_and_reactions %>%
+    group_by(drug) %>%
+    slice(1) %>%
+    arrange(desc(reaction_count))
+top_reaction_per_drug
+```
+
+
+```{r}
+plotDrugAdverseEvents <- function(drugs_and_events, drug_of_interest = "LETAIRIS") {
+    counts_drugs_and_reactions <- drugs_and_events %>%
+        group_by(drug, reaction) %>%
+        summarize(reaction_count = n()) %>%
+        arrange(desc(reaction_count)) 
+    # choose only one drug
+    filter(counts_drugs_and_reactions, drug == drug_of_interest) %>% 
+    top_n(10) %>%
+    ggplot(aes(x = reaction, y = reaction_count)) + 
+        geom_point() + coord_flip() + ggtitle(paste(drug_of_interest, "reactions"))
+}
+```
+
+```{r}
+plotDrugAdverseEvents(drugs_and_events, "LETAIRIS")
+```
+
+```{r}
+# add a function of drug against a varible
+# TODO: Add a check for variable options
+plotDrugAgainstVariable <- function(drugs_and_events, drug_of_interest, variable_of_interest) {
+    print(variable_of_interest)
+    drugs_and_events %>% 
+        group_by_("drug", variable_of_interest) %>% 
+        summarize(count = n()) %>%
+        arrange(desc(count)) %>%
+        filter(drug == drug_of_interest) %>% 
+        top_n(10) %>%
+        ggplot(aes_string(x = variable_of_interest, y = "count")) + 
+        geom_point() + coord_flip() + ggtitle(paste(drug_of_interest, "and", variable_of_interest))
+        
+}
+```
+
+
+
+```{r}
+drugs_and_events
+plotDrugAgainstVariable(drugs_and_events, "ADCIRCA", "date")
+```
+
+```{r}
+plotTimeSeries <- function(drugs_and_events, drug_of_interest) {
+    drugs_and_events %>% 
+        group_by(id, drug, date) %>%
+        summarize(count = n()) %>%
+        arrange(desc(count)) %>%
+        filter(drug == drug_of_interest) %>%
+        ggplot(aes(x = date, y = count)) + geom_line()
+}
+```
+
+```{r}
+plotTimeSeries(drugs_and_events, "LETAIRIS")
+```
+
+```{r}
+drugs_and_events %>% filter(drug == "LETAIRIS")
+```
+
+
+3.  Analysis.  It will also include three functions to analyze
+if 1) there are spikes in adverse event happenings, 2) if spikes
+are related to drug recalls or enforcement and then 3) other
+visualizations such as principal component charts to see which
+variables contribute the most to certain phenomena.
+```{r}
+drugs_and_events
+```
+
+
+```{r}
+# use this to answer question 1
+drugs_and_events %>% group_by(id, date) %>% summarize(id_events = n()) %>% group_by(date) %>% summarize(unique_date_events = n())
+```
+
+```{r}
+# 1 - make into a function to analyze number of adverse events per date
+event_counts <- events %>% group_by(date) %>% summarize(events_on_date = n())
+event_counts
+```
+```{r}
+
+top_10_drugs["drug"]
+event_counts_with_drug <- drugs_and_events %>% group_by(date, drug) %>% summarize(num_events = n()) %>% arrange(desc(num_events)) %>% subset(drug %in% top_10_drugs$drug)
+event_counts_with_drug
+```
+
+```{r}
+top_10_drugs <- drugs_and_events %>% group_by(drug) %>% summarize(n = n()) %>% arrange(desc(n)) %>% top_n(10)
+top_10_drugs
+```
+
+
+
+```{r}
+ggplot(data = event_counts, mapping = aes(x = date, y = events_on_date)) + geom_line()
+```
+```{r}
+# to try plotting data by including different drug information
+ggplot(data = event_counts_with_drug, mapping = aes(x = date, y = num_events, color = top_10_drugs$drug)) +
+    geom_point()
+```
+
+```{r}
+# 2. figure out if drug spikes are related to drug recalls or enforcement
+# may need to query open FDA
+queryRecallData <- function(limit=1, skip=0) {
+    date = "[20040101+TO+20131231]"
+    url = "https://api.fda.gov/drug/enforcement.json?search=" 
+    url = paste0(url, "report_date:", date, "&limit=", limit)
+    url = paste0(url, "&skip=", skip)
+    resp <- GET(url)
+    df <- jsonlite::fromJSON(content(resp, "text"), simplifyVector = FALSE)
+    df
+}
+```
+
+
+```{r}
+recall_df <- queryRecallData(limit = 10)
+recall_results <- recall_df$results
+```
+
+```{r}
+getJSONObject <- function(recall_results, object) {
+    results <- lapply(recall_results, function(x) {
+        x[[object]]
+    })
+    results <- lapply(results, function(x) {
+        if(is.null(x)) {
+            "unknown"
+        }
+        else {
+            x
+        }
+    })
+    print(results)
+    results
+}
+```
+
+
+```{r}
+#recall_results
+ids <- getJSONObject(recall_results, "recall_number")
+#date <- lapply(recall_results, function(x) {x$recall_initiation_date})
+#reason <- lapply(recall_results, function(x) {x$reason_for_recall})
+#product_desc <- lapply(recall_results, function(x) {x$product_description})
+#classification <- lapply(recall_results, function(x) {x$classification})
+#recall_results_df <- tibble(id = unlist(ids), date = unlist(date), reason = unlist(reason), product_desc = unlist(product_desc), classification = unlist(classification))
+#recall_results_df[["date"]] <- as.Date(recall_results_df[["date"]], "%Y%m%d")
+recall_results_df <- tibble(id = unlist(ids))
+recall_results_df
+```
+
+```{r}
+# 3. conduct PCA analysis by following the following tutorial:
+# https://www.datacamp.com/community/tutorials/pca-analysis-r
+
+
+```
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
